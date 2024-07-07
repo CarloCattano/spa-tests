@@ -1,0 +1,25 @@
+<!-- index.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <nav>
+        <a href="/" data-link>Home</a>
+        <a href="/about" data-link>About</a>
+        <a href="/protected" data-link>Protected</a>
+        <a href="/login" data-link>Login</a>
+    </nav>
+
+    <main id="app"></main>
+    <script type="module" src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+

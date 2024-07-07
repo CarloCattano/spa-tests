@@ -1,0 +1,17 @@
+postgres_data/
+migrations
+staticfiles
+.venv
+__pycache__
+.env
+pong/testenv
+testenv
+db.sqlite3
+staticfiles/
+*/static/
+*/media/
+*/__pycache__/
+*/.env
+*/.venv
+*/testenv
+
