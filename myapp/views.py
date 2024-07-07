@@ -3,7 +3,16 @@ from django.http import JsonResponse
 from .forms import LoginForm
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login as django_login
+from django.contrib.auth import logout as django_logout  # Import logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+from django.template import RequestContext
+
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 def index(request):
     data = {
@@ -23,17 +32,33 @@ def contact_data(request):
     data = {"title": "Contact", "content": "Welcome to the Contact Page"}
     return JsonResponse(data)
 
-@login_required
 def protected_data(request):
-    data = {"title": "Protected", "content": "Welcome to the protected page, accessible only to logged-in users."}
-    user = request.user
-    data['username'] = user.username
-    # render template to string with user data
-    html = render_to_string('protected.html', data)
-    data['content'] = html
+
+    if not request.user.is_authenticated:
+        # render please login view template
+        data = render_to_string('registration/needlogin.html', request=request)
+        return JsonResponse(data, safe=False)
+
+    #username 
+    username = request.user.username
+
+    html = render_to_string('protected.html', request=request, context={"username": username})
+    return JsonResponse(html, safe=False) 
+
+
+def logout(request):
+    if request.method == 'POST':
+        django_logout(request)
+    template = render_to_string('registration/logout.html', request=request)
+    data = {
+            "title": "Logout",
+            "content": template,
+            }
+
     return JsonResponse(data)
 
 def login(request):
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():

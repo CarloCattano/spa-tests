@@ -8,9 +8,9 @@ urlpatterns = [
     path('about_data', views.about_data, name='about_data'),
     path('contact_data', views.contact_data, name='contact_data'),
 
+    path('logout', views.logout, name='logout'),  # Add this line
     path('login', views.login, name='login'),
     path('protected_data', views.protected_data, name='protected_data'),
-
-    # accounts login for handling login    
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

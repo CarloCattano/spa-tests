@@ -1,5 +1,15 @@
+{% if username %}
+  <p>Logged in as {{ username }} <p>
+    <form id="logoutForm" method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Logout</button>
+</form>
+
+{% else %}
 <form id="loginForm" method="post" action="{% url 'login' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Login</button>
 </form>
+{% endif %}
