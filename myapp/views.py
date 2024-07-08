@@ -4,15 +4,10 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from .forms import LoginForm
 from django.template.loader import render_to_string
-from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth import logout as django_logout  # Import logout
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.urls import reverse
-from django.template import RequestContext
 from .auth42 import exchange_code_for_token, get_user_data
 from django.conf import settings
-
+from django.contrib.auth import authenticate
 import secrets
 import logging
 import random
@@ -38,14 +33,22 @@ def home_data(request):
         # Ensure the user_data is a dictionary
         context = {'user_data': user_data}
         content = render_to_string('user_info.html', context=context)
-        data = {'title': 'User Info', 'content': content}
+        data = {'title': 'Home', 'content': content}
     else:
-        data = {"title": "Home", "content": "Welcome to the Home Page"}
+        if request.user.is_authenticated:
+            user_data = {
+                'login': request.user.username, 'email': str(request.user.username) + "@42.pong"}
+            context = {'user_data': user_data}
+            content = render_to_string('user_info.html', context=context)
+            data = {'title': 'Home', 'content': content}
+        else:
+            data = {"title": "Home", "content": "Welcome to the Home Page"}
+
     return JsonResponse(data)
 
 
-def about_data(request):
-    data = {"title": "About", "content": "Welcome to the About Page"}
+def local_game(request):
+    data = {"title": "Local", "content": "Play in the same computer"}
     return JsonResponse(data)
 
 
@@ -81,8 +84,38 @@ def logout(request):
     return JsonResponse(data)
 
 
-def login(request):
+# def login(request):
+#
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             username = form.cleaned_data['username']
+#             password = form.cleaned_data['password']
+#             user = authenticate(username=username, password=password)
+#             if user is not None:
+#                 django_login(request, user)
+#                 data = {"title": "Login", "content": "Login successful"}
+#
+#                 return JsonResponse(data)
+#             else:
+#                 data = {"title": "Login",
+#                         "content": "Invalid username or password"}
+#                 return JsonResponse(data, status=400)
+#         else:
+#             data = {"title": "Login", "content": "Form validation failed"}
+#             return JsonResponse(data, status=400)
+#     else:
+#         form = LoginForm()
+#         html_form = render_to_string(
+#             'partial.html', {'form': form}, request=request)
+#         data = {
+#             "title": "Login",
+#             "content": html_form
+#         }
+#         return JsonResponse(data)
+#
 
+def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -92,7 +125,6 @@ def login(request):
             if user is not None:
                 django_login(request, user)
                 data = {"title": "Login", "content": "Login successful"}
-
                 return JsonResponse(data)
             else:
                 data = {"title": "Login",
@@ -105,10 +137,7 @@ def login(request):
         form = LoginForm()
         html_form = render_to_string(
             'partial.html', {'form': form}, request=request)
-        data = {
-            "title": "Login",
-            "content": html_form
-        }
+        data = {"title": "Login", "content": html_form}
         return JsonResponse(data)
 
 
