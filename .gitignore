@@ -8,10 +8,8 @@ pong/testenv
 testenv
 db.sqlite3
 staticfiles/
-*/static/
 */media/
 */__pycache__/
 */.env
 */.venv
 */testenv
-
