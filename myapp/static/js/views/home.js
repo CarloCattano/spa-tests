@@ -1,3 +1,3 @@
-export default function home() {
-    return `<h1>Home</h1><p>This is the Home page.</p>`;
+export function renderHome(data) {
+    return `<div>${data.content}</div>`;
 }

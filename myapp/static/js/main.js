@@ -1,14 +1,16 @@
+import { renderHome } from "./views/home.js";
+import { renderLocalGame } from "./views/local.js";
+
 const fadeOutDuration = 200;
 const fadeInDuration = 600;
-
 
 const routes = {
     "/": { endpoint: "/home_data" },
     "/local": { title: "Local", endpoint: "/local_game" },
     "/login": { title: "Login", endpoint: "/login" },
-    "/protected": {title : "home" , endpoint: "/protected_data" },
+    "/online": { title: "home", endpoint: "/online" },
     "/logout": { title: "Logout", endpoint: "/logout" },
-    "/register": { title: "Register", endpoint:"/register"},
+    "/register": { title: "Register", endpoint: "/register" },
 };
 
 function getCookie(name) {
@@ -28,18 +30,8 @@ function getCookie(name) {
 
 const csrftoken = getCookie('csrftoken');
 
-console.log("changed yet again");
-
-function renderProtected(data) {
+function renderOnlineGame(data) {
     return `<div>${data}</div>`;
-}
-
-function renderHome(data) {
-    return ` <div>${data.content}</div> `;
-}
-
-function renderLocalGame(data) {
-    return ` ${data.content} `;
 }
 
 function renderLogin(data) {
@@ -53,75 +45,69 @@ function renderLogout(data) {
     return `<h1>${data.title}</h1><p>${data.content}</p>`;
 }
 
-function registerNew(data) {
-    return `<div> ${data.content} </div> `;
+function renderRegister(data) {
+    return `<div>${data.content}</div>`;
 }
 
 const viewFunctions = {
     "/": renderHome,
     "/local": renderLocalGame,
     "/login": renderLogin,
-    "/protected": renderProtected,
-    "/logout": renderLogout,  // Add this line for logout
-    "/register": registerNew,
+    "/online": renderOnlineGame,
+    "/logout": renderLogout,
+    "/register": renderRegister,
 };
 
 function router() {
-  let view = routes[location.pathname];
-  if (view) {
-    document.title = view.title;
+    let view = routes[location.pathname];
+    if (view) {
+        document.title = view.title;
 
-    // Add the fade-out class to initiate the fade-out animation
-    const appElement = document.getElementById('app');
-    appElement.classList.add('fade-exit');
+        const appElement = document.getElementById('app');
+        appElement.classList.add('fade-exit');
 
-    fetch(view.endpoint, {
-      method: 'GET',
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-      }
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      document.title = data.title;
-      const renderFunction = viewFunctions[location.pathname];
-      const newContent = renderFunction ? renderFunction(data) : "<p>Page not found</p>";
+        fetch(view.endpoint, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.title = data.title;
+            const renderFunction = viewFunctions[location.pathname];
+            const newContent = renderFunction ? renderFunction(data) : "<p>Page not found</p>";
 
-      // Wait for the fade-out animation to complete
-      setTimeout(() => {
-        appElement.innerHTML = newContent;
+            setTimeout(() => {
+                appElement.innerHTML = newContent;
 
-        appElement.classList.remove('fade-exit');
-        appElement.classList.add('fade-enter');
+                appElement.classList.remove('fade-exit');
+                appElement.classList.add('fade-enter');
 
-        setTimeout(() => appElement.classList.remove('fade-enter'), fadeInDuration);
-      }, fadeOutDuration); // Match the duration of the fade-out animation
+                setTimeout(() => appElement.classList.remove('fade-enter'), fadeInDuration);
 
-      // Handle special cases for certain routes
-      if (location.pathname === "/login") {
-        handleLoginForm();
-      } else if (location.pathname === "/logout") {
-        handleLogoutForm();
-      } else if (location.pathname === "/register") {
-        handleRegisterForm();
-      }
-
-
-    })
-    .catch(error => {
-      console.error("Error fetching data:", error);
-      document.getElementById('app').innerHTML = "<p>Error loading page content.</p>";
-    });
-  } else {
-    // Fallback for unmatched routes
-    history.replaceState("", "", "/");
-    router();
-  }
+                if (location.pathname === "/login") {
+                    handleLoginForm();
+                } else if (location.pathname === "/logout") {
+                    handleLogoutForm();
+                } else if (location.pathname === "/register") {
+                    handleRegisterForm();
+                }
+            }, fadeOutDuration);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            document.getElementById('app').innerHTML = "<p>Error loading page content.</p>";
+        });
+    } else {
+        history.replaceState("", "", "/");
+        router();
+    }
 }
 
 function handleLoginForm() {
@@ -147,7 +133,7 @@ function handleLoginForm() {
         .then(data => {
             document.getElementById("app").innerHTML = `<p>${data.content}</p>`;
             if (data.content === "Login successful") {
-                history.pushState("", "", "/protected");
+                history.pushState("", "", "/online");
                 router();
             }
         })
@@ -181,7 +167,7 @@ function handleLogoutForm() {
             document.getElementById("app").innerHTML = `<p>${data.content}</p>`;
             if (data.content === "Logout successful") {
                 setTimeout(() => {
-                    window.location.href = data.redirect_url;  // Redirect to the home page after logout
+                    window.location.href = data.redirect_url;
                 }, 1000);
             }
         })
@@ -232,5 +218,7 @@ window.addEventListener("click", e => {
 });
 
 window.addEventListener("popstate", router);
-window.addEventListener("DOMContentLoaded", router);
 
+document.addEventListener("DOMContentLoaded", () => {
+    router();
+});

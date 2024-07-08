@@ -61,7 +61,7 @@ def contact_data(request):
     return JsonResponse(data)
 
 
-def protected_data(request):
+def online(request):
 
     if not request.user.is_authenticated:
         # render please login view template
@@ -70,7 +70,7 @@ def protected_data(request):
 
     username = request.user.username
 
-    html = render_to_string('protected.html', request=request, context={
+    html = render_to_string('online_game.html', request=request, context={
                             "username": username})
     return JsonResponse(html, safe=False)
 
