@@ -13,3 +13,4 @@ staticfiles/
 */.env
 */.venv
 */testenv
+*/static/admin
