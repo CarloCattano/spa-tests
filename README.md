@@ -14,3 +14,9 @@ to run the server:
 python manage.py runserver 4222
 ```
 
+
+Adding users via script:
+   - Neat way to init the db to test things, runs a command in django shell that can do operations, in this case adding an user
+```bash
+cat createusers.py | python manage.py shell
+```
