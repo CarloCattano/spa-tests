@@ -1,3 +1,5 @@
+from django.contrib.auth.models import User
+from django.contrib.auth import login as django_login
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from .forms import LoginForm
@@ -18,20 +20,39 @@ import string
 
 logger = logging.getLogger(__name__)
 
+
 def index(request):
-    return render(request, 'index.html')
+    user_data = request.session.get('user_data', {})
+
+    context = {
+        'user': request.user,
+        'username': user_data.get('login', request.user.username)
+    }
+
+    return render(request, 'index.html', context)
+
 
 def home_data(request):
-    data = {"title": "Home", "content": "Welcome to the Home Page"}
+    user_data = request.session.get('user_data')
+    if user_data is not None:
+        # Ensure the user_data is a dictionary
+        context = {'user_data': user_data}
+        content = render_to_string('user_info.html', context=context)
+        data = {'title': 'User Info', 'content': content}
+    else:
+        data = {"title": "Home", "content": "Welcome to the Home Page"}
     return JsonResponse(data)
+
 
 def about_data(request):
     data = {"title": "About", "content": "Welcome to the About Page"}
     return JsonResponse(data)
 
+
 def contact_data(request):
     data = {"title": "Contact", "content": "Welcome to the Contact Page"}
     return JsonResponse(data)
+
 
 def protected_data(request):
 
@@ -40,11 +61,12 @@ def protected_data(request):
         data = render_to_string('registration/needlogin.html', request=request)
         return JsonResponse(data, safe=False)
 
-    #username 
+    # username
     username = request.user.username
 
-    html = render_to_string('protected.html', request=request, context={"username": username})
-    return JsonResponse(html, safe=False) 
+    html = render_to_string('protected.html', request=request, context={
+                            "username": username})
+    return JsonResponse(html, safe=False)
 
 
 def logout(request):
@@ -52,11 +74,12 @@ def logout(request):
         django_logout(request)
     template = render_to_string('registration/logout.html', request=request)
     data = {
-            "title": "Logout",
-            "content": template,
-            }
+        "title": "Logout",
+        "content": template,
+    }
 
     return JsonResponse(data)
+
 
 def login(request):
 
@@ -69,16 +92,19 @@ def login(request):
             if user is not None:
                 django_login(request, user)
                 data = {"title": "Login", "content": "Login successful"}
+
                 return JsonResponse(data)
             else:
-                data = {"title": "Login", "content": "Invalid username or password"}
+                data = {"title": "Login",
+                        "content": "Invalid username or password"}
                 return JsonResponse(data, status=400)
         else:
             data = {"title": "Login", "content": "Form validation failed"}
             return JsonResponse(data, status=400)
     else:
         form = LoginForm()
-        html_form = render_to_string('partial.html', {'form': form}, request=request)
+        html_form = render_to_string(
+            'partial.html', {'form': form}, request=request)
         data = {
             "title": "Login",
             "content": html_form
@@ -88,6 +114,7 @@ def login(request):
 
 def generate_state():
     return ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+
 
 def auth42(request):
     state = generate_state()
@@ -116,8 +143,43 @@ def redirect_view(request):
         user_data = get_user_data(access_token)
         if user_data:
             request.session['user_data'] = user_data
+
+            # Get or create the Django user
+            # assuming 'login' is the username field from 42 API
+            username = user_data.get('login')
+            email = user_data.get('email')
+            user, created = User.objects.get_or_create(
+                username=username, defaults={'email': email})
+
+            # Log in the user
+            django_login(request, user)
+
             return redirect('/')
         else:
             return HttpResponse('No user data returned', status=404)
     else:
         return HttpResponse('Failed to exchange code for access token', status=400)
+
+# def redirect_view(request):
+#     code = request.GET.get('code')
+#     state = request.GET.get('state')
+#     session_state = request.session.get('oauth_state')
+#     logger.info(f"Received state: {state}, session state: {session_state}")
+#
+#     if state != session_state:
+#         return HttpResponse('Invalid state parameter', status=400)
+#
+#     redirect_uri = settings.REDIRECT_URI
+#     access_token = exchange_code_for_token(code, redirect_uri)
+#     logger.info(f"Access token: {access_token}")
+#
+#     if access_token:
+#         request.session['access_token'] = access_token
+#         user_data = get_user_data(access_token)
+#         if user_data:
+#             request.session['user_data'] = user_data
+#             return redirect('/')
+#         else:
+#             return HttpResponse('No user data returned', status=404)
+#     else:
+#         return HttpResponse('Failed to exchange code for access token', status=400)

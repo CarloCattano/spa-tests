@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # .env file in ../.env
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '../.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 REDIRECT_URI = env('REDIRECT_URI')
 CLIENT_ID = env('CLIENT_ID')
@@ -21,7 +21,7 @@ SECRET_KEY = 'django-insecure-^p0nw$@bioch_#9jc%a9m9g4yr(06@yb+b%3v7f1f8dt&m!#xp
 DEBUG = True
 
 ALLOWED_HOSTS = ['pong.ktano-studio.com']
-
+CSRF_TRUSTED_ORIGINS = ['https://pong.ktano-studio.com']
 # Application definition
 
 INSTALLED_APPS = [

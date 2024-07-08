@@ -13,12 +13,11 @@
 </head>
 
 <body>
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="/" data-link>Home</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="/" data-link>Pong</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -34,9 +33,10 @@
         </div>
     </nav>
 
-    <main id="app" class="container mt-5">
-        <!-- Content will be injected here -->
-    </main>
+    <div class="d-flex flex-column min-vh-100">
+        <main id="app" class="container flex-grow-1 mt-5">
+        </main>
+    </div>
 
     <script type="module" src="{% static 'js/main.js' %}"></script>
 
