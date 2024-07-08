@@ -13,4 +13,6 @@ urlpatterns = [
     path('protected_data', views.protected_data, name='protected_data'),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('auth42', views.auth42, name='auth42'),
+    path('redirect', views.redirect_view, name='redirect_view'),
 ]
