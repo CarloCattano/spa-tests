@@ -1,27 +1,27 @@
 {% load static %}
 {% block content %}
-    <div class="container mt-5 text-center" style="background: url('{% static 'assets/42logo.svg' %}') no-repeat center center; background-size: cover; padding: 50px; border-radius: 15px;">
-    <p class="alert alert-warning">Sorry, you need to login to see this page.</p>
+     <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-6 text-center">
+                <p class="alert alert-warning">Sorry, you need to login to see this page.</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3 text-center">
+                        <p>Login as regular user</p>
+                        <a href="/login" class="btn btn-primary btn-block" data-link>Login</a>
+                    </div>
 
-    <p>
-        <p> Regular User: </p>
-        <a href="/login" class="btn btn-primary" data-link>Login</a>
-    </p>
+                    <div class="col-md-6 mb-3 text-center">
+                        <p>Do you have a 42 account?</p>
+                        <a href="/auth42" class="btn btn-success btn-block">42 Login</a>
+                    </div>
 
-    <br>
-
-    <p>Do you have a 42 account?</p>
-
-    <p>
-        <a href="/auth42" class="btn btn-success">42 Auth</a>
-    </p>
-
-
-        <p> Don't have an acoount ? </p>
-        <a href="/register" class="btn btn-primary" data-link> Register</a>
-
-    <div class="mt-3">
+                    <div class="col-md-6 mb-3 text-center">
+                       <p> Don't have an acoount ? </p>
+                       <a href="/register" class="btn btn-primary" data-link> Register</a>
+                   </div>
+                </div>
+    <div class="row mt-3">
         <img src="{% static 'assets/42logo.svg' %}" alt="Logo" style="height: 40px;">
     </div>
-</div>
 {% endblock %}
+

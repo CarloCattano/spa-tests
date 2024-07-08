@@ -1,12 +1,9 @@
-
-<form id="loginForm" class="container mt-5" style="max-width: 400px;">
+<form id="loginForm"  class="text-center" style="max-width: 200px;">
     {% csrf_token %}
-
-    <!-- {{ form.as_p }} -->
     <label for="username">Username</label>
-    <input type="text" name="username" id="username" class="form-control text-center" required>
+    <input type="text" name="username" id="username" class="form-control text-center" maxlength="30" style="max-width: 200px;" required>
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" class="form-control text-center" required>
+    <input type="password" name="password" id="password" class="form-control text-center" maxlength="30" style="max-width: 200px;" required>
 
     <input type="hidden" name="next" value="{{ next }}">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">

@@ -1,11 +1,33 @@
-/* General body styling */
+html, body {
+    padding: 0;
+    margin: 0;
+}
 
+.input {
+    max-width: 200px;
+}
+
+#loginForm {
+  max-width: 300px; /* Adjust the maximum width of the form */
+  margin: 0 auto; /* Center the form horizontally */
+}
+
+#registerForm {
+    max-width: 200px;
+}
 .form-control {
-    max-width: 100%; /* Ensure form control elements don't exceed container width */
-    margin-bottom: 1rem; /* Add margin below each input for better spacing */
+    text-align: center; /* Center the text inside input fields */
+    max-width:222px;
+    margin-bottom: 1rem;
+}
+
+.container {
+    padding: 0;
+    margin: 0 auto;
 }
 
 button.btn {
+    margin-top: 2rem;
     width: 100%; /* Make buttons full width within the form */
 }
 
