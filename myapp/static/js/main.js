@@ -35,7 +35,7 @@ function renderHome(data) {
 }
 
 function renderLocalGame(data) {
-    return `<div> ${data.content} </div>`;
+    return ` ${data.content} `;
 }
 
 function renderLogin(data) {
@@ -63,43 +63,106 @@ const viewFunctions = {
 };
 
 function router() {
-    let view = routes[location.pathname];
+  let view = routes[location.pathname];
+  if (view) {
+    document.title = view.title;
 
-    if (view) {
-        document.title = view.title;
-        fetch(view.endpoint, {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.title = data.title;
-            const renderFunction = viewFunctions[location.pathname];
-            document.getElementById('app').innerHTML = renderFunction ? renderFunction(data) : "<p>Page not found</p>";
-            if (location.pathname === "/login") {
-                handleLoginForm();
-            } else if (location.pathname === "/logout") {
-                handleLogoutForm();
-            } else if (location.pathname === "/register") {
-                handleRegisterForm();
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
-            document.getElementById('app').innerHTML = "<p>Error loading page content.</p>";
-        });
-    } else {
-        history.replaceState("", "", "/");
-        router();
-    }
+    // Add the fade-out class to initiate the fade-out animation
+    const appElement = document.getElementById('app');
+    appElement.classList.add('fade-exit');
+
+    fetch(view.endpoint, {
+      method: 'GET',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      document.title = data.title;
+      const renderFunction = viewFunctions[location.pathname];
+      const newContent = renderFunction ? renderFunction(data) : "<p>Page not found</p>";
+
+      // Wait for the fade-out animation to complete
+      setTimeout(() => {
+        // Update the content
+        appElement.innerHTML = newContent;
+
+        // Remove the fade-out class and add the fade-in class
+        appElement.classList.remove('fade-exit');
+        appElement.classList.add('fade-enter');
+
+        // Remove the fade-in class after the animation completes
+        setTimeout(() => appElement.classList.remove('fade-enter'), 700);
+      }, 300); // Match the duration of the fade-out animation
+
+      // Handle special cases for certain routes
+      if (location.pathname === "/login") {
+        handleLoginForm();
+      } else if (location.pathname === "/logout") {
+        handleLogoutForm();
+      } else if (location.pathname === "/register") {
+        handleRegisterForm();
+      }
+
+
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+      document.getElementById('app').innerHTML = "<p>Error loading page content.</p>";
+    });
+  } else {
+    // Fallback for unmatched routes
+    history.replaceState("", "", "/");
+    router();
+  }
 }
+
+
+
+// function router() {
+//     let view = routes[location.pathname];
+//
+//     if (view) {
+//         document.title = view.title;
+//         fetch(view.endpoint, {
+//             method: 'GET',
+//             headers: {
+//                 'X-Requested-With': 'XMLHttpRequest',
+//             }
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error(`HTTP error! status: ${response.status}`);
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             document.title = data.title;
+//             const renderFunction = viewFunctions[location.pathname];
+//             document.getElementById('app').innerHTML = renderFunction ? renderFunction(data) : "<p>Page not found</p>";
+//             if (location.pathname === "/login") {
+//                 handleLoginForm();
+//             } else if (location.pathname === "/logout") {
+//                 handleLogoutForm();
+//             } else if (location.pathname === "/register") {
+//                 handleRegisterForm();
+//             }
+//         })
+//         .catch(error => {
+//             console.error("Error fetching data:", error);
+//             document.getElementById('app').innerHTML = "<p>Error loading page content.</p>";
+//         });
+//     } else {
+//         history.replaceState("", "", "/");
+//         router();
+//     }
+// }
 
 function handleLoginForm() {
     document.getElementById("loginForm").addEventListener("submit", function (e) {

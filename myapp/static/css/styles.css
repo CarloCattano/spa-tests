@@ -1,25 +1,59 @@
+/* Define the fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Define the fade-out animation */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Apply the animation to .fade-enter */
+.fade-enter {
+  opacity: 0;
+  animation: fadeIn 0.7s forwards;
+}
+
+/* Apply the animation to .fade-exit */
+.fade-exit {
+  opacity: 1;
+  animation: fadeOut 0.3s forwards;
+}
+
 html, body {
     padding: 0;
     margin: 0;
 }
 
-.input {
+#registerForm {
     max-width: 200px;
 }
 
 #loginForm {
-  max-width: 300px; /* Adjust the maximum width of the form */
-  margin: 0 auto; /* Center the form horizontally */
+  /* Adjust the maximum width of the form */
+  max-width: 300px;
+  padding : 1rem;
 }
 
-#registerForm {
-    max-width: 200px;
+.mb-3 {
+  /* Target the parent divs of username and password fields */
+  display: flex; /* Make them flex containers */
+  align-items: center; /* Vertically center content */
+  padding-left: 10px; /* Add some padding to the left of the label */
 }
-.form-control {
-    text-align: center; /* Center the text inside input fields */
-    max-width:222px;
-    margin-bottom: 1rem;
+
+.form-label {
+  /* Adjust label width if needed for responsiveness */
+  width: fit-content; /* Allow label width to adjust based on content */
 }
+
+.card-body {
+    margin-top: 0;
+    padding-top: 0;
+}
+
 
 .container {
     padding: 0;

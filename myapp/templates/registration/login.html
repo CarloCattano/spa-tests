@@ -1,11 +1,17 @@
-<form id="loginForm"  class="text-center" style="max-width: 200px;">
+  <form id="loginForm" method="post" action="/accounts/login/" class="mt-5">
     {% csrf_token %}
-    <label for="username">Username</label>
-    <input type="text" name="username" id="username" class="form-control text-center" maxlength="30" style="max-width: 200px;" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" class="form-control text-center" maxlength="30" style="max-width: 200px;" required>
+    <input type="hidden" name="csrfmiddlewaretoken" value="FyABBNG75yWiW22I4h7MoBsRXvJxPghrjzySB3tqXGBaY1aOn1vAxEFpvJEsx872">
 
-    <input type="hidden" name="next" value="{{ next }}">
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-    <button type="submit" class="btn btn-primary mt-3" data-link>Login</button>
-</form>
+    <div class="mb-3 d-flex align-items-center">
+      <label for="username" class="form-label col-sm-2 col-form-label">Username</label>
+      <input type="text" class="form-control col-sm-4" name="username" id="username" maxlength="30" required>
+    </div>
+
+    <div class="mb-3 d-flex align-items-center">
+      <label for="password" class="form-label col-sm-2 col-form-label">Password</label>
+      <input type="password" class="form-control col-sm-4" name="password" id="password" required maxlength="30">
+    </div>
+
+    <input type="hidden" name="next" value="">
+    <button type="submit" class="btn btn-primary">Login Form</button>
+  </form>
