@@ -1,12 +1,18 @@
 import os
 from pathlib import Path
+import environ
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+# .env file in ../.env
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '../.env'))
+
+REDIRECT_URI = env('REDIRECT_URI')
+CLIENT_ID = env('CLIENT_ID')
+CLIENT_SECRET = env('CLIENT_SECRET')
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-^p0nw$@bioch_#9jc%a9m9g4yr(06@yb+b%3v7f1f8dt&m!#xp'
@@ -60,6 +66,9 @@ WSGI_APPLICATION = 'spango.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+# Use database-backed sessions
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 DATABASES = {
     'default': {
