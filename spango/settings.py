@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-^p0nw$@bioch_#9jc%a9m9g4yr(06@yb+b%3v7f1f8dt&m!#xp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pong.ktano-studio.com']
 
 # Application definition
 
@@ -111,6 +111,6 @@ STATICFILES_DIRS = [
     BASE_DIR / 'myapp/static',
 ]
 
-# logout redirect 
+# logout redirect
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
