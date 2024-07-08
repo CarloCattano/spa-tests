@@ -15,10 +15,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 def index(request):
-    data = {
-        "user": request.user.username if request.user.is_authenticated else "Guest",
-    }
-    return render(request, 'index.html', data)
+    return render(request, 'index.html')
 
 def home_data(request):
     data = {"title": "Home", "content": "Welcome to the Home Page"}
@@ -61,6 +58,8 @@ def login(request):
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
+        # make sure password form is protected
+        form.fields['password'].widget.attrs['autocomplete'] = 'new-password'
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']

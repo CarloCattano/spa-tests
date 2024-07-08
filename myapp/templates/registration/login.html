@@ -2,14 +2,13 @@
 <form id="loginForm">
     {% csrf_token %}
 
-    {{ form.as_p }}
-    <!-- <label for="username">Username</label> -->
-    <!-- <input type="text" name="username" id="username"> -->
-    <!-- <label for="password">Password</label> -->
-    <!-- <input type="password" name="password" id="password> -->
-    <!---->
-    <!---->
-    <!-- <input type="hidden" name="next" value="{{ next }}"> -->
-    <!-- <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"> -->
-    <!-- <button type="submit">Login</button> -->
+    <!-- {{ form.as_p }} -->
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username">
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password">
+
+    <input type="hidden" name="next" value="{{ next }}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    <button type="submit" data-link>Login</button>
 </form>
