@@ -1,0 +1,11 @@
+### How to run:
+
+if not on docker first create a virtual env:
+    ```bash python3 -m venv testenv```
+    ```bash python3 -m venv testenv```
+    ```bash pip install --upgrade pip```
+    ```bash pip install -r requirements.txt```
+
+to run the server:
+    ```bash python manage.py runserver 4222 ```
+
