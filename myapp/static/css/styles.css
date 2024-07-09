@@ -112,7 +112,6 @@ img {
         padding: 12px 25px;
         font-size: 1em;
     }
-
     img {
         width: 50%;
     }
@@ -131,7 +130,30 @@ img {
 
 /* Footer styling */
 .footer {
-    position: relative;
+    /* stay always at the bottom of the screen */
+    position: absolute;
+    text-align: center;
     bottom: 0;
     width: 100%;
 }
+
+.mp3-hover:hover
+{
+	-webkit-transition: all 200ms ease-in;
+	-webkit-transform: scale(1.1);
+	-ms-transition: all 200ms ease-in;
+	-ms-transform: scale(1.1);   
+	-moz-transition: all 200ms ease-in;
+	-moz-transform: scale(1.1);
+	transition: all 200ms ease-in;
+	transform: scale(1.1);
+}
+
+img.mp3-hover:hover{
+	box-shadow: 0px 0px 100px #94a7ba;
+	z-index: 2;
+}
+
+.mp3-audio{
+}
+
