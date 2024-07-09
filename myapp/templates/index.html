@@ -36,7 +36,6 @@
         </div>
     </nav>
 
-
     <!-- Main Content  to be loaded dynamically -->
 
     <main id="app" class="container"></main>
@@ -52,13 +51,16 @@
                         <h5 class="justify-content-center" id="musicModalLabel">Music Controls</h5>
                     <div class="modal-body">
                         <audio controls>
-                            <source src="{% static 'assets/music.mp3' %}" type="audio/mpeg">
+                            <source src="{% static 'audio/track.mp3' %}" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
                             </div>
-                        </div>
+                <div class="container">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
                 </div>
             </div>
         </div>

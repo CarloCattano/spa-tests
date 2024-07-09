@@ -3,7 +3,7 @@
 const roomName = 'lobby'; // Replace with dynamic room name if needed
 
 const chatSocket = new WebSocket(
-    `ws://${window.location.host}/ws/chat/lobby/`
+    `wss://${window.location.host}/ws/chat/lobby/`
 );
 
 console.log(chatSocket);

@@ -71,7 +71,7 @@ function renderRegister(data) {
 }
 
 function renderChat(data) {
-    return data.content;
+    return `${data.content}` ;
 }
 
 const viewFunctions = {
@@ -124,9 +124,7 @@ function router() {
                 } else if (location.pathname === "/register") {
                     handleRegisterForm();
                 } else if (location.pathname === "/lobby") {
-                    // if no chat is already initialized
-                    if (!document.getElementById('chat-form'))
-                        initializeChat(); 
+                    initializeChat(); 
                 }
             }, fadeOutDuration);
         })

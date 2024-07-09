@@ -55,10 +55,12 @@ def lobby_view(request):
     }
     return JsonResponse(data)
 
+
 def local_game(request):
     data = {"title": 'local', 'content': render_to_string("local_game.html")}
 
     return JsonResponse(data)
+
 
 def online(request):
 
@@ -68,11 +70,11 @@ def online(request):
 
     username = request.user.username
 
-    html = render_to_string('chat.html', request=request, context={
+    html = render_to_string('online_game.html', request=request, context={
                             "username": username})
 
     # html = render_to_string('online_game.html', request=request, context={
-                            # "username": username})
+    # "username": username})
 
     return JsonResponse(html, safe=False)
 
