@@ -4,6 +4,10 @@ import { renderLocalGame } from "./views/local.js";
 const fadeOutDuration = 200;
 const fadeInDuration = 600;
 
+let audioContext = new AudioContext() || new webkitAudioContext();
+let oscillator = audioContext.createOscillator();
+let gainNode = audioContext.createGain();
+
 const routes = {
     "/": { endpoint: "/home_data" },
     "/local": { title: "Local", endpoint: "/local_game" },
@@ -209,16 +213,53 @@ function handleRegisterForm() {
     });
 }
 
+document.getElementById("app").addEventListener("click", () => {
+
+    if (event.target.id === "StartLocalGameButton") {
+        if (audioContext.state !== "running") {
+            audioContext.resume();
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 1);
+        }
+
+        oscillator.frequency.value = 440.0;
+        gainNode.gain.exponentialRampToValueAtTime(0.2, audioContext.currentTime + 0.08);
+
+        setTimeout(() => {
+            oscillator.frequency.value = 880.0;
+            gainNode.gain.value = 0.2;
+        }, 200);
+
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 1);
+    }
+});
+
 window.addEventListener("click", e => {
+
     if (e.target.matches("[data-link]")) {
         e.preventDefault();
         history.pushState("", "", e.target.href);
         router();
     }
+
 });
 
 window.addEventListener("popstate", router);
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Views router
     router();
+
+    // Audio setup init for Synth effects generated in real time 
+
+    audioContext = new AudioContext() || new webkitAudioContext();
+    oscillator = audioContext.createOscillator();
+    oscillator.type = "triangle";
+    oscillator.frequency.value = 220.0;
+    gainNode = audioContext.createGain();
+    gainNode.gain.value = 0.2;
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
 });
