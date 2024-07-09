@@ -1,0 +1,11 @@
+{% load static %}
+<div id="chat-container">
+    <h2>Chat Room</h2>
+    <div class="container" id="messages"></div>
+    <form id="chat-form">
+        <input type="text" id="message-input" placeholder="Type a message...">
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script src="{% static 'js/chat.js' %}"></script>

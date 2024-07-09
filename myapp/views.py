@@ -2,15 +2,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as django_login
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm
 from django.template.loader import render_to_string
-from django.contrib.auth import logout as django_logout  # Import logout
+from django.contrib.auth import logout as django_logout
 from .auth42 import exchange_code_for_token, get_user_data
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 
-import secrets
 import logging
 import random
 import string
@@ -49,35 +48,39 @@ def home_data(request):
     return JsonResponse(data)
 
 
+def lobby_view(request):
+    data = {
+        "title": "Online Chat",
+        "content": render_to_string("chat.html")
+    }
+    return JsonResponse(data)
+
 def local_game(request):
-    # data = {"title": "Local", "content": "Play in the same computer"}
     data = {"title": 'local', 'content': render_to_string("local_game.html")}
 
     return JsonResponse(data)
 
-
-def contact_data(request):
-    data = {"title": "Contact", "content": "Welcome to the Contact Page"}
-    return JsonResponse(data)
-
-
 def online(request):
 
     if not request.user.is_authenticated:
-        # render please login view template
         data = render_to_string('registration/needlogin.html', request=request)
         return JsonResponse(data, safe=False)
 
     username = request.user.username
 
-    html = render_to_string('online_game.html', request=request, context={
+    html = render_to_string('chat.html', request=request, context={
                             "username": username})
+
+    # html = render_to_string('online_game.html', request=request, context={
+                            # "username": username})
+
     return JsonResponse(html, safe=False)
 
 
 def logout(request):
     if request.method == 'POST':
         django_logout(request)
+
     template = render_to_string('registration/logout.html', request=request)
     data = {
         "title": "Logout",

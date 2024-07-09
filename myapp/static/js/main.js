@@ -12,7 +12,27 @@ const routes = {
     "/online": { title: "home", endpoint: "/online" },
     "/logout": { title: "Logout", endpoint: "/logout" },
     "/register": { title: "Register", endpoint: "/register" },
+    "/lobby": { title: "Lobby Chat", endpoint: "/lobby" },
 };
+
+function initializeChat() {
+    const form = document.getElementById('chat-form');
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const input = document.getElementById('message-input');
+            const message = input.value;
+            input.value = '';
+
+            const messagesDiv = document.getElementById('messages');
+            const newMessage = document.createElement('div');
+            newMessage.textContent = message;
+            messagesDiv.appendChild(newMessage);
+        });
+    } else {
+        console.error("Chat form not found");
+    }
+}
 
 function getCookie(name) {
     let cookieValue = null;
@@ -50,6 +70,10 @@ function renderRegister(data) {
     return `<div>${data.content}</div>`;
 }
 
+function renderChat(data) {
+    return data.content;
+}
+
 const viewFunctions = {
     "/": renderHome,
     "/local": renderLocalGame,
@@ -57,6 +81,7 @@ const viewFunctions = {
     "/online": renderOnlineGame,
     "/logout": renderLogout,
     "/register": renderRegister,
+    "/lobby": renderChat,
 };
 
 function router() {
@@ -98,6 +123,10 @@ function router() {
                     handleLogoutForm();
                 } else if (location.pathname === "/register") {
                     handleRegisterForm();
+                } else if (location.pathname === "/lobby") {
+                    // if no chat is already initialized
+                    if (!document.getElementById('chat-form'))
+                        initializeChat(); 
                 }
             }, fadeOutDuration);
         })

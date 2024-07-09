@@ -1,12 +1,13 @@
 <h2>Protected Page</h2>
 
+<button id="loadChatButton" data-link="/lobby">Open Chat</button>
 <p>This page is protected. Only logged in users can see it.</p>
 
-<p>Logged in as {{ username }} <p>
+<p>Logged in as {{ username }}
+<p>
 
 <form id="logoutForm" method="post" action="{% url 'logout' %}">
    {% csrf_token %}
    {{ form.as_p }}
-<button type="submit">Logout</button>
+   <button type="submit">Logout</button>
 </form>
-

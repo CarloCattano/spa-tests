@@ -25,6 +25,8 @@ CSRF_TRUSTED_ORIGINS = ['https://pong.ktano-studio.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,6 +65,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'spango.wsgi.application'
 
+ASGI_APPLICATION = 'spango.asgi.application'
+
+# Channel layers configuration, using Redis for example
+CHANNEL_LAYERS = {
+        'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
