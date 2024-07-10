@@ -65,14 +65,17 @@ def online(request):
 
     if not request.user.is_authenticated:
         # render please login view template
-        data = render_to_string('registration/needlogin.html', request=request)
+        html = render_to_string('registration/needlogin.html', request=request)
+        data = {"title": "Online", "content": html}
         return JsonResponse(data, safe=False)
 
     username = request.user.username
 
-    html = render_to_string('online_game.html', request=request, context={
-                            "username": username})
-    return JsonResponse(html, safe=False)
+    html = render_to_string('online_game.html', request=request, context={"username": username})
+
+    data = {"title": "Online", "content": html}
+    
+    return JsonResponse(data, safe=False)
 
 
 def logout(request):

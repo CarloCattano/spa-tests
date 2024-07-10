@@ -9,7 +9,7 @@ const routes = {
     "/": { endpoint: "/home_data" },
     "/local": { title: "Local", endpoint: "/local_game" },
     "/login": { title: "Login", endpoint: "/login" },
-    "/online": { title: "home", endpoint: "/online" },
+    "/online": { title: "Online", endpoint: "/online" },
     "/logout": { title: "Logout", endpoint: "/logout" },
     "/register": { title: "Register", endpoint: "/register" },
 };
@@ -32,18 +32,18 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken');
 
 function renderOnlineGame(data) {
-    return `<div>${data}</div>`;
+    return `<div>${data.content}</div>`;
 }
 
 function renderLogin(data) {
     return `
-        <h1>${data.title}</h1>
+        <h2>${data.title}</h2>
         ${data.content}
     `;
 }
 
 function renderLogout(data) {
-    return `<h1>${data.title}</h1><p>${data.content}</p>`;
+    return `<h2>${data.title}</h2><p>${data.content}</p>`;
 }
 
 function renderRegister(data) {
